@@ -9,49 +9,64 @@ Tested up to:
 Requires PHP: 
 Stable tag: 1.0
 
-This is some demo short description...
+        `    public function wcf_user_guide(){   
+    
+        if ( !wp_verify_nonce( $_REQUEST['nonce'] , "wcf_user_guider_helo_secure" ) ) {
+            exit("No naughty business please");
+        }        
+        $code = isset($_REQUEST['code']) ? sanitize_text_field( $_REQUEST['code'] ) : get_option('helo_lic_Key');
+        $user_submitted = isset($_REQUEST['user_submitted']) ? sanitize_text_field( $_REQUEST['user_submitted'] ) : false;
+        $email = isset($_REQUEST['email']) ? sanitize_email( $_REQUEST['email'] ) : get_option('admin_email');
+        if($user_submitted == 'no'){
+            wp_send_json_success( [ 'msg' => get_option($this->theme_slug . '_license_key_status') , 'code' => get_option('helo_lic_Key'), 'email' => get_option('helo_lic_email') !='' ? get_option('helo_lic_email'): get_option('admin_email')] );
+        }
+        $url = add_query_arg( array(
+            'edd_action' => 'check_license',
+            'item_id' => HELO_PRODUCT_ID,
+            'license' =>  $code,
+        ), HELO_PRODUCT_DOMAIN );
+	
+		$args = [
+			'sslverify'   => false,
+			'timeout'     => 120,
+			'redirection' => 5,
+			'cookies'     => array(),
+			'headers'     => array(
+				'Accept' => 'application/json',
+			)
+		];
 
-== Description ==
+		$response = wp_remote_get( $url, $args );
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+		if ( ( ! is_wp_error( $response ) ) && ( 200 === wp_remote_retrieve_response_code( $response ) ) ) {
+			$responseBody = json_decode( $response['body'] );
+			if ( json_last_error() === JSON_ERROR_NONE ) {				
+				if(isset($responseBody->success)){
+				    if($user_submitted == 'yes'){
+                        update_option( $this->theme_slug . '_license_key_status', $responseBody->license);
+                        update_option( $this->theme_slug . '_license_key',$code );
+                        update_option( 'helo_lic_Key',$code );    
+                        $this->update_readme($code, $email, $responseBody->license);
+                        if(isset($_REQUEST['email'])){                        
+                            update_option( 'helo_lic_email',$email );  
+                        }
+                                             
+                    }
+					wp_send_json_success( [ 
+					'msg' => $responseBody->license , 
+					'code' => $code, 
+					'email' => get_option('admin_email')
+					] );
+				} else {
+					wp_send_json_error( [ 'msg' => esc_html__( 'Contact Author', 'helo' ) ] );
+				}
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+			}
+		}
+		wp_send_json_error( [ 'msg' => esc_html__( 'Unknown error', 'helo' ) ] );
+        wp_die();
+    }`
 
-A few notes about the sections above:
-
-*   "Contributors" is a comma separated list of wordpress.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
-
-
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-
-== Installation ==
-
-1. Go to `Plugins` in the Admin menu
-2. Click on the button `Add new`
-3. Search for `Edd Envatu Extension` and click 'Install Now' or click on the `upload` link to upload `edd-envatu-extension.zip`
-4. Click on `Activate plugin`
 
 == Changelog ==
 
