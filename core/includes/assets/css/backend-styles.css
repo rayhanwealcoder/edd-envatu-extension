@@ -1,0 +1,15 @@
+/*----------------- 
+Backend related CSS
+-----------------*/
+
+.wcf-valid-token{
+    color: rgb(35, 127, 247);
+}
+
+#edd_settings[wcf_edd_envatu_hideen]{
+    display: none;
+}
+
+.wcf-valid-token.error{
+    color: rgb(248, 75, 75);
+}
