@@ -13,6 +13,8 @@
       init: function (settings) {
         edd_envatu_module.config = {       
           envatu_api_input : null,
+          envatu_api2_input : null,
+          envatu_api3_input : null,
         };
           // Allow overriding the default config
         $.extend(edd_envatu_module.config, settings);
@@ -25,10 +27,19 @@
            
            if($(this).attr('id') == 'edd_settings[wcf_edd_envatu_api]'){
                 edd_envatu_module.config.envatu_api_input =  $(this);
-           }            
+           }  
+           
+            if($(this).attr('id') == 'edd_settings[wcf_edd_envatu_api_2]'){
+              edd_envatu_module.config.envatu_api2_input =  $(this);
+            }
+            
+            if($(this).attr('id') == 'edd_settings[wcf_edd_envatu_api_3]'){
+              edd_envatu_module.config.envatu_api3_input =  $(this);
+            } 
         });       
        
-        if(edd_envatu_module.config.envatu_api_input && edd_envatu_module.config.envatu_api_input.val().length > 6){
+        if(edd_envatu_module.config.envatu_api_input && edd_envatu_module.config.envatu_api_input.val().length > 6)
+        {
            
             jQuery.ajax({
                 type : "post",
@@ -48,6 +59,56 @@
                 }
              }); 
         }
+        setTimeout(() => {          
+      
+        if(edd_envatu_module.config.envatu_api2_input && edd_envatu_module.config.envatu_api2_input.val().length > 6)
+          {
+             
+              jQuery.ajax({
+                  type : "post",
+                  dataType : "json",
+                  url : wcf_envatu.ajax_url,
+                  data : {action: "wcf_envatu_api_validation", token : edd_envatu_module.config.envatu_api2_input.val(), security: wcf_envatu.nonce},
+                  success: function(response) {
+                      
+                      if(response.success){
+                          if(response.data.code == 200){
+                              edd_envatu_module.config.envatu_api2_input.after('<span class="wcf-valid-token wcf-e-valid"> &#10003; '+response.data.msg+'</span>');
+                          }else{
+                              edd_envatu_module.config.envatu_api2_input.after('<span class="wcf-valid-token error"> &#10540; '+response.data.msg+'</span>');
+                          }                        
+                      }                  
+                     
+                  }
+               }); 
+          }
+          
+        }, 100);
+        
+        setTimeout(() => {        
+          
+          if(edd_envatu_module.config.envatu_api3_input && edd_envatu_module.config.envatu_api3_input.val().length > 6)
+            {
+               
+                jQuery.ajax({
+                    type : "post",
+                    dataType : "json",
+                    url : wcf_envatu.ajax_url,
+                    data : {action: "wcf_envatu_api_validation", token : edd_envatu_module.config.envatu_api3_input.val(), security: wcf_envatu.nonce},
+                    success: function(response) {
+                        
+                        if(response.success){
+                            if(response.data.code == 200){
+                                edd_envatu_module.config.envatu_api3_input.after('<span class="wcf-valid-token wcf-e-valid"> &#10003; '+response.data.msg+'</span>');
+                            }else{
+                                edd_envatu_module.config.envatu_api3_input.after('<span class="wcf-valid-token error"> &#10540; '+response.data.msg+'</span>');
+                            }                        
+                        }                  
+                       
+                    }
+                 }); 
+            }
+          }, 100);
        
       }
     };

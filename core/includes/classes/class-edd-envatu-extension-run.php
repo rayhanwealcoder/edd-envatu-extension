@@ -288,6 +288,8 @@ class Edd_Envatu_Extension_Run{
 				'std'   => ''
 			),
 			
+		
+			
 			array(
 				'id'    => 'wcf_edd_envatu_order_create',
 				'name'  => __( 'Order Create?', 'edd-envatu-extension' ),
@@ -305,6 +307,40 @@ class Edd_Envatu_Extension_Run{
 				  <p> License Attachment -> $license_attach</p>",
 				'type'  => 'checkbox'
 				
+			),
+			
+			array(
+				'id'    => 'wcf_edd_envatu_api_2',
+				'name'  => __( 'Envatu Author 2 Token (Optional)', 'edd-envatu-extension' ),
+				'desc'  => '
+					<div> Go to <a href="https://build.envato.com/create-token/">https://build.envato.com/create-token/</a> 
+				<ul> 
+					<li>1. Check View and search Envato sites (selected by default) </li>
+				<li> 2. View the user’s items’ sales history</li>
+					
+				</ul>
+				<br/>	
+				<p> use ?author=2 after url endpoint as query param </p>
+				</div>',
+				'type'  => 'text',
+				'std'   => ''
+			),
+			
+			array(
+				'id'    => 'wcf_edd_envatu_api_3',
+				'name'  => __( 'Envatu Author 3 Token (Optional)', 'edd-envatu-extension' ),
+				'desc'  => '
+					<div> Go to <a href="https://build.envato.com/create-token/">https://build.envato.com/create-token/</a> 
+				<ul> 
+					<li>1. Check View and search Envato sites (selected by default) </li>
+				<li> 2. View the user’s items’ sales history</li>
+					
+				</ul>
+				<p> use ?author=3 url endpoint as query param </p>
+				<br/>		
+				</div>',
+				'type'  => 'text',
+				'std'   => ''
 			),
 			
 		);
