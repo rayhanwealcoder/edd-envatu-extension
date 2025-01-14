@@ -320,7 +320,7 @@ class Edd_Envatu_Extension_Run{
 					
 				</ul>
 				<br/>	
-				<p> use ?author=2 after url endpoint as query param </p>
+				<p> use envatu/license/varification?author=2 after url endpoint as query param </p>
 				</div>',
 				'type'  => 'text',
 				'std'   => ''
@@ -336,7 +336,7 @@ class Edd_Envatu_Extension_Run{
 				<li> 2. View the user’s items’ sales history</li>
 					
 				</ul>
-				<p> use ?author=3 url endpoint as query param </p>
+				<p> use envatu/license/varification?author=3 url endpoint as query param </p>
 				<br/>		
 				</div>',
 				'type'  => 'text',

@@ -422,8 +422,7 @@ class Edd_Envatu_Rest_Api{
 			$personalToken = edd_get_option('wcf_edd_envatu_api_'.$_REQUEST['author'], ''); 	
 		}else{
 			$personalToken = edd_get_option('wcf_edd_envatu_api', ''); 	
-		}
-		
+		}	
 		
 		// Surrounding whitespace can cause a 404 error, so trim it first
 		$code = trim($code);	
